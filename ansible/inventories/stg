@@ -1,0 +1,8 @@
+[servers]
+#give stg server ip address
+server1 ansible_host=34.241.164.228
+
+[servers:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/multi-env-ansible-terraform-project/Terrform/infra/terra-ansible-key.pem
+ansible_python_interpreter=/usr/bin/python3
