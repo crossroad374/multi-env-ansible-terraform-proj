@@ -1,6 +1,6 @@
-Terrform/.terraform.lock.hcl
-Terrform/.terraform.tfstate.lock.info
-Terrform/terraform.tfstate
-Terrform/terraform.tfstate.backup
-Terrform/.terraform/modules/modules.json
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/modules/modules.json
 
