@@ -61,7 +61,7 @@ sudo apt install ansible
 Verify the Installation
 
 ansible --version  
-image2
+![Image](https://github.com/user-attachments/assets/0a0ca74c-5f26-4a9e-aca4-81ca6a18f044)
 
 2. Creating Directories for Terraform and Ansible
 To keep your infrastructure code and server configuration scripts organized, create two separate directories: one for Terraform and another for Ansible.
