@@ -44,7 +44,7 @@ sudo apt-get update && sudo apt-get install terraform
 Verify the Installation
 
 terraform --version  
-image1
+![Image](https://github.com/user-attachments/assets/7295d9be-28fb-4ceb-b270-fbe171586611)
 
 b. Installing Ansible on Ubuntu
 Ansible simplifies configuration management and automation. To install it:
