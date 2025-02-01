@@ -20,7 +20,7 @@ Configuring Nginx across multiple environments
 Automating infrastructure management
 
 Project Diagram :
-Project-diagram
+[Project-diagram](https://github.com/LondheShubham153/terraform-ansible-multi-env/blob/master/images/Project-design.gif?raw=true)
 
 1. Installing Terraform and Ansible
 a. Installing Terraform on Ubuntu
