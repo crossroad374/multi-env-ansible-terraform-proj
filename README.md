@@ -24,106 +24,110 @@ a. Installing Terraform on Ubuntu
 Follow these steps to install Terraform on Ubuntu:
 
 Update the Package List
-
 sudo apt-get update  
+
 Install Dependencies
-
 sudo apt-get install -y gnupg software-properties-common  
+
 Add HashiCorp's GPG Key
-
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg  
+
 Add the HashiCorp Repository
-
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list  
+
 Install Terraform
-
 sudo apt-get update && sudo apt-get install terraform  
-Verify the Installation
 
+Verify the Installation
 terraform --version  
 ![Image](https://github.com/user-attachments/assets/7295d9be-28fb-4ceb-b270-fbe171586611)
 
-b. Installing Ansible on Ubuntu
+**b. Installing Ansible on Ubuntu**
 Ansible simplifies configuration management and automation. To install it:
 
 Add the Ansible PPA
-
 sudo apt-add-repository ppa:ansible/ansible  
+
 Update the Package List
-
 sudo apt update  
+
 Install Ansible
-
 sudo apt install ansible  
-Verify the Installation
 
+Verify the Installation
 ansible --version  
 ![Image](https://github.com/user-attachments/assets/0a0ca74c-5f26-4a9e-aca4-81ca6a18f044)
 
-2. Creating Directories for Terraform and Ansible
+**2. Creating Directories for Terraform and Ansible**
 To keep your infrastructure code and server configuration scripts organized, create two separate directories: one for Terraform and another for Ansible.
 
 Navigate to Your Project Directory (or create a new one):
 
 mkdir <your-project-name> && cd <your-project-name>
 Create a Directory for Terraform:
-
 mkdir terraform  
+
 Create a Directory for Ansible:
-
 mkdir ansible  
-Verify the Directory Structure:
 
+Verify the Directory Structure:
 tree  
+
 Your project structure should look like this:
 
-<your-project-name>/  
+**<your-project-name>/  
 ├── terraform/  
-└── ansible/  
+└── ansible/**  
+
 With this structure, you can separate your Terraform scripts (infrastructure provisioning) and Ansible playbooks (server configuration) efficiently.
 
-3. Setting Up Infrastructure Directory in Terraform
+
+**3. Setting Up Infrastructure Directory in Terraform**
+
 After creating the infra directory, add basic configurations to each Terraform file to provision essential AWS resources.
 
 Steps to Create the Infrastructure Directory and Add File Content
+
 Navigate to the Terraform Directory:
-
 cd terraform  
-Create the infra Directory:
 
+Create the infra Directory:
 mkdir infra && cd infra  
+
 Create and Populate the Terraform Files: below is code which i have used to create infrastructure structure to accomplish project pattern
 
 a. [bucket.tf] (S3 Bucket Configuration) : Refer to the source code provided above
-
 b. [dynamodb.tf] (DynamoDB Table for State Locking) : Refer to the source code provided above
-
 c. [ec2.tf] (EC2 Instance Configuration) : Refer to the source code provided above
-
 d. [output.tf] (Output Definitions) : Refer to the source code provided above
-
 e. [variable.tf] (Variable Declarations) : Refer to the source code provided above
 
 Verify the File Structure and Content:
 
 tree  
+
 Your structure should look like this:
 
-infra/
+**infra/
 ├── bucket.tf  
 ├── dynamodb.tf  
 ├── ec2.tf  
 ├── output.tf  
-└── variable.tf  
+└── variable.tf  **
+
+
 Each file now contains sample resource configurations which i have used to create that project. You can modify the values in [variable.tf] to fit your project’s requirements.
 
-4. Going Back to Terraform Directory and Adding Main Infrastructure Files
+**4. Going Back to Terraform Directory and Adding Main Infrastructure Files**
+
 1. Go Back to the Terraform Directory
 cd ..
+
 2. Create the [main.tf] File (Using Modules for Multi-Environment Setup)
 The [main.tf] file will include the configuration to call your infra module and create resources for the dev, stage, and prod environments.
 
 Refer to the source code provided above
+
 In this [main.tf], you're defining three modules (dev, stage, prod) using the same infra module, but you can customize them with different settings such as the EC2 instance type, AMI, S3 bucket name, and DynamoDB table name.even display output of Public ips as well.
 
 3. Create the [providers.tf] File (AWS Provider Configuration)
@@ -138,18 +142,16 @@ Refer to the source code provided above
 note : here I have used key name as devops-key , you can create with any name , and replace that every-where that old one appears,
 
 To create SSH keys for accessing the EC2 winstances, use the ssh-keygen command:
-
 ssh-keygen -t rsa -b 2048 -f devops-key -N ""
+
 This generates two files:
-
 devops-key (private key)
-
 [devops-key.pub] (public key)
 
 Final Directory Structure
 At this point, your Terraform project structure should look like this:
 
-├── devops-key        # Private SSH key for EC2 access
+**├── devops-key        # Private SSH key for EC2 access
 ├── devops-key.pub    # Public SSH key for EC2 access
 ├── infra
 │   ├── bucket.tf
@@ -159,52 +161,34 @@ At this point, your Terraform project structure should look like this:
 │   └── variable.tf
 ├── main.tf           # Defines environment-based modules
 ├── providers.tf      # AWS provider configuration
-├── terraform.tf      # Backend configuration for state management
+├── terraform.tf      # Backend configuration for state management**
+
 Next Steps
+
 Run Terraform Commands
 Run the following commands to initialize, plan, and apply your Terraform setup:
 
 a. terraform init : Initialize Terraform with the required providers and modules
-
-image3
-
 b. terraform plan : Review the plan to apply changes
-
-image4
-
 c. terraform apply : Apply the changes to provision infrastructur
 
-image5
-
-You can see below that all instance , buckets ,dynamodb are running or created , which is created through Terraform :
-
-Instances :
-
-image6
-
-Buckets :
-
-image7
-
-DynamoDb tables:
-
-image8
-
 Secure the Private Key
+
 Before using the private key, ensure that it is securely encrypted by setting proper permissions. This prevents other users from accessing it. Run the following command to restrict the access:
 
 chmod 400 devops-key  # Set read-only permissions for the owner to ensure security
 This command ensures that the private key (devops-key) is only readable by you, preventing others from accessing or modifying it.
 
 Access EC2 Instances
-After provisioning, you can SSH into the EC2 instances using the generated devops-key:
 
+After provisioning, you can SSH into the EC2 instances using the generated devops-key:
 ssh -i devops-key ubuntu@<your-ec2-ip>
-image9
+
 
 Terraform steps done ,now going to setup with ansible
 
-5. Creating dynamic inventories in ansible dir
+**5. Creating dynamic inventories in ansible dir**
+
 Firstly nevigate to ansible dir which would you have created before
 
 Step 1: Create the Inventories Directory
@@ -217,51 +201,54 @@ Refer to the source code provided above
 For inventories/prod:
 Refer to the source code provided above
 Resulting Directory Structure
-inventories
+**inventories
 ├── dev
 ├── prod
-└── stg
-6. Creating playbook for installing Nginx on all servers
+└── stg**
+
+**6. Creating playbook for installing Nginx on all servers**
 Step 1: Navigate to the Ansible Directory
 If you're not already in the Ansible directory, navigate to it first:
-
 cd ../ansible
+
 Step 2: Create the playbooks Directory
 Create the playbooks directory inside the Ansible directory:
-
 mkdir playbooks
+
 Step 3: Navigate to the playbooks Directory
 Now, navigate into the playbooks directory:
-
 cd playbooks
+
 Step 4: Create the install_nginx_playbook.yml File
 Create the install_nginx_playbook.yml file with the following content to install Nginx and render a webpage using the nginx-role:
 
 Refer to the source code provided above
+
 Step 5: Verify the Directory Structure
 After completing the above steps, your Ansible directory structure should look like this:
 
-ansible
+**ansible
 ├── inventories
 │   ├── dev
 │   ├── prod
 │   └── stg
 ├── playbooks
-│   └── install_nginx_playbook.yml
-7. Now initializing Roles for nginx named nginx-role from ansible galaxy
+│   └── install_nginx_playbook.yml**
+
+**7. Now initializing Roles for nginx named nginx-role from ansible galaxy**
 Here are the steps to initialize the nginx-role using Ansible Galaxy, which will generate the necessary folder structure for managing all tasks, files, handlers, templates, and variables related to the Nginx role.
 
 Step 1: Navigate to the playbooks Directory
 If you're not already in the playbooks directory, navigate to it:
-
 cd ansible/playbooks
+
 Step 2: Initialize the nginx-role Using Ansible Galaxy
 Now, use the ansible-galaxy command to initialize the nginx-role:
-
 ansible-galaxy role init nginx-role
+
 This will create the following directory structure within the nginx-role folder:
 
-nginx-role
+**nginx-role
 ├── README.md
 ├── defaults
 │   └── main.yml
@@ -278,7 +265,8 @@ nginx-role
 │   ├── inventory
 │   └── test.yml
 └── vars
-    └── main.yml
+    └── main.yml**
+    
 Step 3: Add Custom Tasks and Files to Your nginx-role
 Now that your role structure is ready, you can add your custom tasks and files.
 
@@ -286,10 +274,9 @@ Now that your role structure is ready, you can add your custom tasks and files.
 Create a tasks/main.yml file under the nginx-role/tasks/ directory. This file will contain all the steps to install, configure, and manage the Nginx service. Here's the content for your tasks/main.yml:
 
 Refer to the source code provided above
+
 This will ensure that:
-
 Nginx is installed with the latest version.
-
 Nginx service is enabled and starts automatically.
 
 The index.html file is copied to the /var/www/html directory, which is where the default Nginx webpage is served from.
@@ -300,11 +287,13 @@ You can add an index.html file under the nginx-role/files/ directory. This file 
 Refer to the source code provided above
 Note: You can replace this HTML content with your own custom webpage content as needed. The goal here is to serve a simple webpage as part of the Nginx configuration.
 
-8. To add the update_inventories.sh script to your Ansible directory and integrate it with your existing setup, follow these steps:
+**8. To add the update_inventories.sh script to your Ansible directory and integrate it with your existing setup, follow these steps:**
+
 Step 1: Create the update_inventories.sh Script
 In your ansible directory, create a new file named update_inventories.sh with the following content. This script will dynamically update the inventory files for dev, stg, and prod environments based on the IPs fetched from the Terraform outputs.
 
 Refer to the source code provided above
+
 This script will:
 
 Navigate to the Terraform directory and fetch the public IPs of the instances for dev, stg, and prod environments.
@@ -316,7 +305,7 @@ Add common variables for all servers in each environment's inventory file.
 Step 2: Verify the Directory Structure
 After adding the script, your ansible directory should look like this:
 
-ansible
+**ansible
 ├── inventories
 │   ├── dev
 │   ├── prod
@@ -341,15 +330,16 @@ ansible
 │       │   └── test.yml
 │       └── vars
 │           └── main.yml
-├── update_inventories.sh
+├── update_inventories.sh**
+
 Step 3: Make the Script Executable
 Before running the update_[inventories.sh] script, ensure that it is executable. You can do this by running the following command:
-
 chmod +x update_inventories.sh
+
 Step 4: Run the Script
 You can now execute the script to update the inventory files with the IPs fetched from Terraform:
-
 ./update_inventories.sh
+
 Step 5: Verify the Inventory Files
 After running the script, check the inventories directory. The dev, stg, and prod inventory files should now be updated with the IPs of your servers and the necessary variables.
 
@@ -381,7 +371,7 @@ This will execute the playbook using the updated all(dev,stg,prod) inventory.
 Step 7: Varify the all servers whether html page is visible or not (for all inventory like : dev,stg,prod):
 image11
 
-9. Final Directory structure for this project
+**9. Final Directory structure for this project
 .
 ├── README.md
 ├── ansible
@@ -421,15 +411,18 @@ image11
     ├── providers.tf
     ├── terraform.tf
     ├── terraform.tfstate
-    └── terraform.tfstate.backup
-10. Infrastructure Destroy
+    └── terraform.tfstate.backup**
+
+    
+**10. Infrastructure Destroy**
+
 After successfully implementing and managing your infrastructure across multiple environments with Terraform and Ansible, it's time to clean up and destroy all the resources that were provisioned. This step ensures that no resources are left running, which helps avoid unnecessary costs.
 
 To destroy the infrastructure, follow these simple steps:
 
 Navigate to the Terraform Directory: Go to the directory where your Terraform configuration files are located. This is typically where your main.tf file and other Terraform scripts are present.
-
 cd /path/to/terraform/directory
+
 Run Terraform Destroy: Execute the following command to destroy all the resources that were created by Terraform. The --auto-approve flag ensures that you won’t be prompted to confirm the destruction.
 
 terraform destroy --auto-approve
@@ -445,7 +438,7 @@ Once the command finishes executing, your infrastructure will be completely torn
 
 This is the final step to ensure that you have a well-managed infrastructure setup that can be recreated anytime using Terraform and Ansible.
 
-image12
+
 
 Note: Be cautious when running terraform destroy as it will remove all resources, and data in your infrastructure will be lost. Always ensure that you’ve backed up any important data before performing the destruction.
 
