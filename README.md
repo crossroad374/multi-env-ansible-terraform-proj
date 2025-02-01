@@ -1,29 +1,26 @@
 # multi-env-ansible-terraform-proj
-DevOps Project: Multi-Environment Infrastructure with Terraform and Ansible
 
+**DevOps Project: Multi-Environment Infrastructure with Terraform and Ansible
+Introduction**
 
-DevOps Project: Multi-Environment Infrastructure with Terraform and Ansible
-Introduction
 This comprehensive DevOps project demonstrates how to set up a robust, multi-environment infrastructure using Terraform for provisioning and Ansible for configuration management. The project covers creating infrastructure for development, staging, and production environments, with a focus on automation, scalability, and best practices.
 
-Project Overview
+**Project Overview**
+
 The project involves:
 
-Installing Terraform and Ansible
+1. Installing Terraform and Ansible
+2. Setting up AWS infrastructure
+3. Creating dynamic inventories
+4. Configuring Nginx across multiple environments
+5. Automating infrastructure management
 
-Setting up AWS infrastructure
-
-Creating dynamic inventories
-
-Configuring Nginx across multiple environments
-
-Automating infrastructure management
-
-Project Diagram :
+**Project Diagram :**
 ![Image](https://github.com/user-attachments/assets/7100a428-31a7-497d-b6af-5f5bda1b166b)
 
-1. Installing Terraform and Ansible
+**1. Installing Terraform and Ansible**
 a. Installing Terraform on Ubuntu
+
 Follow these steps to install Terraform on Ubuntu:
 
 Update the Package List
